@@ -12,7 +12,7 @@ print('Choose from the options below:')
 user_selection = input("0: exit the program\n"
                        "1: lookup truck mileage\n"
                        "2: lookup package by ID\n"
-                       "3: lookup package statuses by time\n")
+                       "3: lookup package info by time\n")
 
 #  exits application if user types 0
 if user_selection == '0':
@@ -20,6 +20,7 @@ if user_selection == '0':
 
 #  prints the mileage of each truck and the total mileages of all trucks
 elif user_selection == '1':
+    # calls the start_routes function to start the trucks on their route.
     start_routes(timedelta(hours=-0))
     print('Mileage:\nTruck 1: ' + str(round(truck1.miles, 2))
           + '\nTruck 2: ' + str(truck2.miles) + '\nTruck 3: ' + str(truck3.miles)
@@ -27,6 +28,7 @@ elif user_selection == '1':
 
 #  prints package information by the user-entered package ID
 elif user_selection == '2':
+    # calls the start_routes function to start the trucks on their route.
     start_routes(timedelta(hours=-0))
     ID = input('Enter package ID: ')
     print('Package ID: ' + (h.lookup(ID)).package_id)
@@ -44,6 +46,8 @@ elif user_selection == '3':
         time = input("Please type a specific time (format: HH:MM), 24hr: ")
         t = datetime.strptime(time, '%H:%M')
         delta = timedelta(hours=t.hour, minutes=t.minute)
+        # calls the start_routes function to start the trucks on their route,
+        # using the time-entered by user (later used to set the package statuses).
         start_routes(delta)
         print("\n------------------------ALL PACKAGES AS OF " + str(delta) + '------------------------')
         i = 1
@@ -73,4 +77,3 @@ elif user_selection == '3':
 
 else:
     print('Invalid entry. Please try again.')
-# package.package_delivery_deadline

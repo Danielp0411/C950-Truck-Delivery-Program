@@ -29,7 +29,7 @@ class HashTable(object):
             self.array[index] = []
             self.array[index].append([key, value])
 
-    # Rubric: F - 'lookup' function for retrieving package information by package I
+    # Rubric: F - 'lookup' function for retrieving package information by package ID
     def lookup(self, key):
         """Get a value by key"""
         index = self.hash(key)
