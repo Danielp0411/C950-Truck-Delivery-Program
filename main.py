@@ -41,30 +41,31 @@ elif user_selection == '2':
 #  Rubric: G - prints the status of all packages at a specific time
 elif user_selection == '3':
     try:
-        time = input("Please type a specific time (format: HH:MM): ")
+        time = input("Please type a specific time (format: HH:MM), 24hr: ")
         t = datetime.strptime(time, '%H:%M')
         delta = timedelta(hours=t.hour, minutes=t.minute)
         start_routes(delta)
+        print("\n------------------------ALL PACKAGES AS OF " + str(delta) + '------------------------')
         i = 1
         while i <= 40:
             package = h.lookup(str(i))
             if package.package_status == 'delivered':
                 print(
-                    '[ID]  ' + package.package_id + '     [Address]  ' + package.package_address + '     [Deadline]  '
-                    + package.package_delivery_deadline + '     [City]  ' + package.package_city + '     [Zip Code]  '
-                    + package.package_zip + '     [Weight]  ' + package.package_weight + '     [Status]  '
+                    package.package_id + ' | ' + package.package_address + ' | '
+                    + package.package_city + ' | ' + package.package_zip + ' | '
+                    + package.package_weight + ' | ' + package.package_delivery_deadline + ' | '
                     + ANSICodes.green(package.package_status) + ' @ ' + str(package.delivery_time))
             elif package.package_status == 'en route':
                 print(
-                    '[ID]  ' + package.package_id + '     [Address]  ' + package.package_address + '     [Deadline]  '
-                    + package.package_delivery_deadline + '     [City]  ' + package.package_city + '     [Zip Code]  '
-                    + package.package_zip + '     [Weight]  ' + package.package_weight + '     [Status]  '
+                    package.package_id + ' | ' + package.package_address + ' | '
+                    + package.package_city + ' | ' + package.package_zip + ' | '
+                    + package.package_weight + ' | ' + package.package_delivery_deadline + ' | '
                     + ANSICodes.cyan(package.package_status))
             else:
                 print(
-                    '[ID]  ' + package.package_id + '     [Address]  ' + package.package_address + '     [Deadline]  '
-                    + package.package_delivery_deadline + '     [City]  ' + package.package_city + '     [Zip Code]  '
-                    + package.package_zip + '     [Weight]  ' + package.package_weight + '     [Status]  '
+                    package.package_id + ' | ' + package.package_address + ' | '
+                    + package.package_city + ' | ' + package.package_zip + ' | '
+                    + package.package_weight + ' | ' + package.package_delivery_deadline + ' | '
                     + ANSICodes.yellow(package.package_status))
             i = i + 1
     except (ValueError, NameError):
@@ -72,3 +73,4 @@ elif user_selection == '3':
 
 else:
     print('Invalid entry. Please try again.')
+# package.package_delivery_deadline
