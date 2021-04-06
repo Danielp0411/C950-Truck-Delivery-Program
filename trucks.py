@@ -12,9 +12,9 @@ class Truck:
 
 
 #  creates a list of package IDs for each truck
-truck_1_packages = ['29', '30', '31', '34', '37', '40', '1', '14', '16', '20', '13', '15', '19', '27', '35', '39']
+truck_1_packages = ['29', '30', '31', '34', '37', '40', '1', '14', '16', '20', '13', '15', '19', '7', '21', '39']
 truck_2_packages = ['3', '18', '36', '38', '6', '25', '32', '28', '4', '12', '17', '24', '26']
-truck_3_packages = ['9', '2', '5', '7', '8', '10', '11', '21', '22', '23', '33']
+truck_3_packages = ['9', '2', '5', '8', '10', '11', '22', '23', '27', '33', '35']
 
 #  creates truck objects for truck1, truck2, and truck3
 truck1 = Truck('4001 South 700 East', timedelta(hours=8), 0, truck_1_packages)
@@ -23,11 +23,14 @@ truck3 = Truck('4001 South 700 East', timedelta(hours=10, minutes=30), 0, truck_
 
 
 #  loops through all of the packages, finds the nearest neighbor (address), and delivers their package
-def nearest_neighbor(truck):
+def algorithm(truck, time):
     i = 0  # initializes i to 0
     current_truck_distance = float(truck.miles)  # initializes current_truck_distance to current miles of truck.
     current_time = truck.hub_departure  # initializes current_time to the trucks hub departure time.
     current_distance = float(100)  # initializes current_distance to 100
+
+    #  the outer 'while' loops after the truck moves location. Saving the results of the inner while loop.
+    #  The inner 'while' loops after finding the distance between the current location and another - keeping the shortest one.
     while len(truck.assoc_packages) != 0:
         while i < len(truck.assoc_packages):
             current_address = truck.location  # sets the current address as the trucks location
@@ -53,8 +56,13 @@ def nearest_neighbor(truck):
             current_distance)  # adds the distance to the mileage count
         current_time = package.delivery_time = current_time + time_calculator(
             current_distance)  # records time of delivery
-
         current_distance = float(100)  # sets distance back to the initial value of 100
+
+        #  if time is not equal to 0, calls the set_package_statuses function. Else, marks package as delivered.
+        if time != timedelta(hours=0):
+            set_package_status(package, truck, time)
+        else:
+            package.package_status = 'delivered'
 
     # checks if truck is empty. If so, returns truck to hub and mileage to the truck.
     if len(truck.assoc_packages) == 0:
@@ -78,3 +86,13 @@ def get_distance(current_address, package_address):
 def time_calculator(miles):
     time = miles / 18
     return timedelta(hours=time)
+
+
+#  changes package statuses to 'delivered' or 'en route'.  'at the hub' is the default
+def set_package_status(package, truck, time):
+    if package.delivery_time <= time:
+        package.package_status = 'delivered'
+    elif package.delivery_time > time < truck.hub_departure:
+        None
+    else:
+        package.package_status = 'en route'

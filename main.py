@@ -5,10 +5,13 @@ import trucks
 from datetime import timedelta, datetime
 from csvreader import h
 
+
 #  starts the truck routes
-trucks.nearest_neighbor(trucks.truck1)
-trucks.nearest_neighbor(trucks.truck2)
-trucks.nearest_neighbor(trucks.truck3)
+def run_routes(time):
+    trucks.algorithm(trucks.truck1, time)
+    trucks.algorithm(trucks.truck2, time)
+    trucks.algorithm(trucks.truck3, time)
+
 
 #  prints user interface title and options
 print('----------Western Governors University Parcel Service----------')
@@ -21,13 +24,17 @@ user_selection = input("0: exit the program\n"
 #  exits application if user types 0
 if user_selection == '0':
     exit()
+
 #  prints the mileage of each truck and the total mileages of all trucks
 elif user_selection == '1':
-    print('Mileage:\nTruck 1: ' + str(trucks.truck1.miles)
+    run_routes(timedelta(hours=-0))
+    print('Mileage:\nTruck 1: ' + str(round(trucks.truck1.miles, 2))
           + '\nTruck 2: ' + str(trucks.truck2.miles) + '\nTruck 3: ' + str(trucks.truck3.miles)
-          + '\nTotal mileage: ' + str(trucks.truck1.miles + trucks.truck2.miles + trucks.truck3.miles))
+          + '\nTotal mileage: ' + str(round(trucks.truck1.miles + trucks.truck2.miles + trucks.truck3.miles, 2)))
+
 #  prints package information by the user-entered package ID
 elif user_selection == '2':
+    run_routes(timedelta(hours=-0))
     ID = input('Enter package ID: ')
     print('Package ID: ' + (h.lookup(ID)).package_id)
     print('Delivery Address: ' + (h.lookup(ID)).package_address)
@@ -43,14 +50,18 @@ elif user_selection == '3':
         time = input("Please type a specific time (format: HH:MM): ")
         t = datetime.strptime(time, '%H:%M')
         delta = timedelta(hours=t.hour, minutes=t.minute)
-
+        run_routes(delta)
         i = 1
         while i <= 40:
-            if (h.lookup(str(i))).delivery_time < delta:
+            if (h.lookup(str(i))).package_status == 'delivered':
                 print('[ID] ' + (h.lookup(str(i))).package_id + ' [Status] ' + (
-                    h.lookup(str(i))).package_status + ' : ' + str((h.lookup(str(i))).delivery_time))
+                    h.lookup(str(i))).package_status + ' @ ' + str((h.lookup(str(i))).delivery_time))
+            elif (h.lookup(str(i))).package_status == 'en route':
+                print('[ID] ' + (h.lookup(str(i))).package_id + ' [Status] ' + (
+                    h.lookup(str(i))).package_status + ' to ' + str((h.lookup(str(i))).package_address))
             else:
-                print('[ID] ' + (h.lookup(str(i))).package_id + ' [Status] ' + (h.lookup(str(i))).package_status)
+                print('[ID] ' + (h.lookup(str(i))).package_id + ' [Status] ' + (
+                    h.lookup(str(i))).package_status)
             i = i + 1
     except (ValueError, NameError):
         print('Oops! That was not the correct format. Please try again!')
