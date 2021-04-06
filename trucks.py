@@ -1,11 +1,9 @@
 from datetime import timedelta
 from csvreader import *
-
-
-#  creates a Truck class
 from utils import time_calculator
 
 
+#  creates a Truck class
 class Truck:
     def __init__(self, location, hub_departure, miles, assoc_packages=[]):
         self.location = location
@@ -23,6 +21,13 @@ truck_3_packages = ['9', '2', '5', '8', '10', '11', '22', '23', '27', '33', '35'
 truck1 = Truck('4001 South 700 East', timedelta(hours=8), 0, truck_1_packages)
 truck2 = Truck('4001 South 700 East', timedelta(hours=9, minutes=10), 0, truck_2_packages)
 truck3 = Truck('4001 South 700 East', timedelta(hours=10, minutes=30), 0, truck_3_packages)
+
+
+#  starts the truck routes
+def start_routes(time):
+    run_route(truck1, time)
+    run_route(truck2, time)
+    run_route(truck3, time)
 
 
 #  loops through all of the packages, finds the nearest neighbor (address), and delivers their package
@@ -51,7 +56,7 @@ def run_route(truck, time):
                 package = current_package
                 value = truck.assoc_packages[i]
             i = i + 1
-        i = 0  # sets i back to the initial value of 0
+        i = 0
 
         truck.location = location  # sets trucks location to the last package delivered
         truck.assoc_packages.remove(value)  # removes delivered package from truck
@@ -90,6 +95,6 @@ def set_package_status(package, truck, time):
     if package.delivery_time <= time:
         package.package_status = 'delivered'
     elif package.delivery_time > time < truck.hub_departure:
-        None
+        var = None
     else:
         package.package_status = 'en route'

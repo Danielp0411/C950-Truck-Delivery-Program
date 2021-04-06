@@ -1,17 +1,17 @@
 #  creates a HashTable class
 class HashTable(object):
     def __init__(self, length=40):
-        # Initiate our array with empty values.
+        # Initializes the array with empty values.
         self.array = [None] * length
 
     def hash(self, key):
-        # Get the index of our array for a specific string key.
+        # Get the index of the array for a specific string key.
         length = len(self.array)
         return hash(key) % length
 
     # Rubric: E - 'insert' function for storing package information
     def insert(self, key, value):
-        # Adds a value to our array by its key.
+        # Adds a value to the array by its key.
         index = self.hash(key)
         if self.array[index] is not None:
             # Checks if the key already exists.
@@ -36,7 +36,7 @@ class HashTable(object):
         if self.array[index] is None:
             raise KeyError()
         else:
-            # Checks if our key exists. If so, returns its value.
+            # Checks if the key exists. If so, returns its value.
             for kvp in self.array[index]:
                 if kvp[0] == key:
                     return kvp[1]

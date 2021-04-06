@@ -6,14 +6,6 @@ from datetime import timedelta, datetime
 from csvreader import h
 from utils import ANSICodes
 
-
-#  starts the truck routes
-def start_routes(time):
-    run_route(truck1, time)
-    run_route(truck2, time)
-    run_route(truck3, time)
-
-
 #  prints user interface title and options
 print('----------Western Governors University Parcel Service----------')
 print('Choose from the options below:')

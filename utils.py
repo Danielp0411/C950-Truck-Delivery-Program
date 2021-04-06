@@ -2,6 +2,7 @@ from datetime import timedelta
 from typing import Any
 
 
+#  colors text in the console
 class ANSICodes:
     CLEAR = '\033[0m'
     GREEN = '\u001b[32;1m'
