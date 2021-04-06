@@ -3,6 +3,9 @@ from csvreader import *
 
 
 #  creates a Truck class
+from utils import time_calculator
+
+
 class Truck:
     def __init__(self, location, hub_departure, miles, assoc_packages=[]):
         self.location = location
@@ -23,7 +26,7 @@ truck3 = Truck('4001 South 700 East', timedelta(hours=10, minutes=30), 0, truck_
 
 
 #  loops through all of the packages, finds the nearest neighbor (address), and delivers their package
-def algorithm(truck, time):
+def run_route(truck, time):
     i = 0  # initializes i to 0
     current_truck_distance = float(truck.miles)  # initializes current_truck_distance to current miles of truck.
     current_time = truck.hub_departure  # initializes current_time to the trucks hub departure time.
@@ -80,12 +83,6 @@ def get_distance(current_address, package_address):
         current_distance = distance_data[address_lookup(current_address)][
             address_lookup(package_address)]
     return current_distance
-
-
-#  calculates the time it takes to reach an address by the miles travelled
-def time_calculator(miles):
-    time = miles / 18
-    return timedelta(hours=time)
 
 
 #  changes package statuses to 'delivered' or 'en route'.  'at the hub' is the default

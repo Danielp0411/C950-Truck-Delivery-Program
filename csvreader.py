@@ -22,9 +22,11 @@ with open('Supporting Docs/packages.csv') as packages_file:
             package_address = '410 S State St'
             package_zip = '84111'
 
+        #  creates a package object for each package
         p1 = Package(package_id, package_address, package_city, package_state, package_zip, package_delivery_deadline,
                      package_weight, package_note, 'at the hub', '')
 
+        #  places each package into the hash table with their package ID as the key
         h.insert(package_id, p1)
 
 # imports distance data from csv file.

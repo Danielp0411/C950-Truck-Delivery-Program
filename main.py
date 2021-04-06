@@ -1,16 +1,17 @@
 #  --------------------------
 #  Daniel Phillips #001044985
 #  --------------------------
-import trucks
+from trucks import *
 from datetime import timedelta, datetime
 from csvreader import h
+from utils import ANSICodes
 
 
 #  starts the truck routes
-def run_routes(time):
-    trucks.algorithm(trucks.truck1, time)
-    trucks.algorithm(trucks.truck2, time)
-    trucks.algorithm(trucks.truck3, time)
+def start_routes(time):
+    run_route(truck1, time)
+    run_route(truck2, time)
+    run_route(truck3, time)
 
 
 #  prints user interface title and options
@@ -27,14 +28,14 @@ if user_selection == '0':
 
 #  prints the mileage of each truck and the total mileages of all trucks
 elif user_selection == '1':
-    run_routes(timedelta(hours=-0))
-    print('Mileage:\nTruck 1: ' + str(round(trucks.truck1.miles, 2))
-          + '\nTruck 2: ' + str(trucks.truck2.miles) + '\nTruck 3: ' + str(trucks.truck3.miles)
-          + '\nTotal mileage: ' + str(round(trucks.truck1.miles + trucks.truck2.miles + trucks.truck3.miles, 2)))
+    start_routes(timedelta(hours=-0))
+    print('Mileage:\nTruck 1: ' + str(round(truck1.miles, 2))
+          + '\nTruck 2: ' + str(truck2.miles) + '\nTruck 3: ' + str(truck3.miles)
+          + '\nTotal mileage: ' + str(round(truck1.miles + truck2.miles + truck3.miles, 2)))
 
 #  prints package information by the user-entered package ID
 elif user_selection == '2':
-    run_routes(timedelta(hours=-0))
+    start_routes(timedelta(hours=-0))
     ID = input('Enter package ID: ')
     print('Package ID: ' + (h.lookup(ID)).package_id)
     print('Delivery Address: ' + (h.lookup(ID)).package_address)
@@ -42,7 +43,8 @@ elif user_selection == '2':
     print('Delivery City: ' + (h.lookup(ID)).package_city)
     print('Delivery Zip Code: ' + (h.lookup(ID)).package_zip)
     print('Weight: ' + (h.lookup(ID)).package_weight)
-    print('Delivery Status: ' + (h.lookup(ID)).package_status + ' : ' + str((h.lookup(ID)).delivery_time))
+    print('Delivery Status: ' + ANSICodes.green((h.lookup(ID)).package_status) + ' : ' + str(
+        (h.lookup(ID)).delivery_time))
 
 #  Rubric: G - prints the status of all packages at a specific time
 elif user_selection == '3':
@@ -50,18 +52,28 @@ elif user_selection == '3':
         time = input("Please type a specific time (format: HH:MM): ")
         t = datetime.strptime(time, '%H:%M')
         delta = timedelta(hours=t.hour, minutes=t.minute)
-        run_routes(delta)
+        start_routes(delta)
         i = 1
         while i <= 40:
-            if (h.lookup(str(i))).package_status == 'delivered':
-                print('[ID] ' + (h.lookup(str(i))).package_id + ' [Status] ' + (
-                    h.lookup(str(i))).package_status + ' @ ' + str((h.lookup(str(i))).delivery_time))
-            elif (h.lookup(str(i))).package_status == 'en route':
-                print('[ID] ' + (h.lookup(str(i))).package_id + ' [Status] ' + (
-                    h.lookup(str(i))).package_status + ' to ' + str((h.lookup(str(i))).package_address))
+            package = h.lookup(str(i))
+            if package.package_status == 'delivered':
+                print(
+                    '[ID]  ' + package.package_id + '     [Address]  ' + package.package_address + '     [Deadline]  '
+                    + package.package_delivery_deadline + '     [City]  ' + package.package_city + '     [Zip Code]  '
+                    + package.package_zip + '     [Weight]  ' + package.package_weight + '     [Status]  '
+                    + ANSICodes.green(package.package_status) + ' @ ' + str(package.delivery_time))
+            elif package.package_status == 'en route':
+                print(
+                    '[ID]  ' + package.package_id + '     [Address]  ' + package.package_address + '     [Deadline]  '
+                    + package.package_delivery_deadline + '     [City]  ' + package.package_city + '     [Zip Code]  '
+                    + package.package_zip + '     [Weight]  ' + package.package_weight + '     [Status]  '
+                    + ANSICodes.cyan(package.package_status))
             else:
-                print('[ID] ' + (h.lookup(str(i))).package_id + ' [Status] ' + (
-                    h.lookup(str(i))).package_status)
+                print(
+                    '[ID]  ' + package.package_id + '     [Address]  ' + package.package_address + '     [Deadline]  '
+                    + package.package_delivery_deadline + '     [City]  ' + package.package_city + '     [Zip Code]  '
+                    + package.package_zip + '     [Weight]  ' + package.package_weight + '     [Status]  '
+                    + ANSICodes.yellow(package.package_status))
             i = i + 1
     except (ValueError, NameError):
         print('Oops! That was not the correct format. Please try again!')
