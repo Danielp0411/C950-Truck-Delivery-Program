@@ -30,23 +30,23 @@ def start_routes(time):
     run_route(truck3, time)
 
 
-#  loops through all of the packages, finds the nearest neighbor (address), and delivers their package
+#  Complexity - O(n^2)
+#  loops through all of the packages, finds the nearest neighbor (address),
+#  delivers their package, then re-loops from the new location. This continues until the truck is empty.
 def run_route(truck, time):
-    i = 0  # initializes i to 0
-    current_truck_distance = float(truck.miles)  # initializes current_truck_distance to current miles of truck.
+    i = 0
+    current_truck_miles = 0  # initializes current_truck_miles to current miles of truck.
     current_time = truck.hub_departure  # initializes current_time to the trucks hub departure time.
-    current_distance = float(100)  # initializes current_distance to 100
+    current_distance = float(100)  # initialize to 100. Represents the closest deliverable location, in miles.
 
     #  the outer 'while' loops after the truck moves location. Saving the results of the inner while loop.
     #  The inner 'while' loops after finding the distance between the current location and another - keeping the shortest one.
     while len(truck.assoc_packages) != 0:
         while i < len(truck.assoc_packages):
-            current_address = truck.location  # sets the current address as the trucks location
-
+            current_truck_location = truck.location  # sets the current address as the trucks location
             current_package = h.lookup(truck.assoc_packages[i])  # selected package
             package_address = current_package.package_address  # address of selected package
-
-            new_distance = get_distance(current_address, package_address)  # calls get_delivery function
+            new_distance = get_distance(current_truck_location, package_address)  # calls get_delivery function
 
             # checks if the current distance is larger than the new distance.
             # if so, sets variables to new values.
@@ -60,10 +60,8 @@ def run_route(truck, time):
 
         truck.location = location  # sets trucks location to the last package delivered
         truck.assoc_packages.remove(value)  # removes delivered package from truck
-        current_truck_distance = current_truck_distance + float(
-            current_distance)  # adds the distance to the mileage count
-        current_time = package.delivery_time = current_time + time_calculator(
-            current_distance)  # records time of delivery
+        current_truck_miles = current_truck_miles + float(current_distance)  # adds the distance to the mileage count
+        current_time = package.delivery_time = current_time + time_calculator(current_distance)  # records delivery time
         current_distance = float(100)  # sets distance back to the initial value of 100
 
         #  if time is not equal to 0, calls the set_package_statuses function. Else, marks package as delivered.
@@ -74,11 +72,12 @@ def run_route(truck, time):
 
     # checks if truck is empty. If so, returns truck to hub and mileage to the truck.
     if len(truck.assoc_packages) == 0:
-        return_to_hub = get_distance(current_address, '4001 South 700 East')  # gets the distance back to the hub
-        current_truck_distance = current_truck_distance + float(return_to_hub)  # adds the distance to the mileage count
-        truck.miles = current_truck_distance  # sets the trucks miles equal to the overall miles travelled
+        return_to_hub = get_distance(current_truck_location, '4001 South 700 East')  # gets the distance back to the hub
+        current_truck_miles = current_truck_miles + float(return_to_hub)  # adds the distance to the mileage count
+        truck.miles = current_truck_miles  # sets the trucks miles equal to the overall miles travelled
 
 
+#  Complexity - O(n)
 # gets and returns the distance between two addresses
 def get_distance(current_address, package_address):
     if address_lookup(package_address) > address_lookup(current_address):
@@ -90,6 +89,7 @@ def get_distance(current_address, package_address):
     return current_distance
 
 
+#  Complexity - O(1)
 #  changes package statuses to 'delivered' or 'en route'.  'at the hub' is the default
 def set_package_status(package, truck, time):
     if package.delivery_time <= time:

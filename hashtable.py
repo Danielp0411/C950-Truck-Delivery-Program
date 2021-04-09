@@ -1,14 +1,18 @@
 #  creates a HashTable class
 class HashTable(object):
+
+    # Complexity - O(1)
     def __init__(self, length=40):
         # Initializes the array with empty values.
         self.array = [None] * length
 
+    # Complexity - O(1)
     def hash(self, key):
         # Get the index of the array for a specific string key.
         length = len(self.array)
         return hash(key) % length
 
+    # Complexity - O(1) or O(n)
     # Rubric: E - 'insert' function for storing package information
     def insert(self, key, value):
         # Adds a value to the array by its key.
@@ -29,6 +33,7 @@ class HashTable(object):
             self.array[index] = []
             self.array[index].append([key, value])
 
+    # Complexity - O(1)
     # Rubric: F - 'lookup' function for retrieving package information by package ID
     def lookup(self, key):
         """Get a value by key"""

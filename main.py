@@ -7,13 +7,14 @@ from csvreader import h
 from utils import ANSICodes
 
 #  prints user interface title and options
+# Complexity - O(1)
 print('----------Western Governors University Parcel Service----------')
 print('Choose from the options below:')
 user_selection = input("0: exit the program\n"
                        "1: lookup truck mileage\n"
                        "2: lookup package by ID\n"
                        "3: lookup package info by time\n")
-
+# Complexity - O(n)
 #  exits application if user types 0
 if user_selection == '0':
     exit()

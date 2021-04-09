@@ -4,6 +4,7 @@ from hashtable import HashTable
 
 h = HashTable()  # creates new HashTable object
 
+# Complexity - O(n)
 # imports package data from csv file, creates package objects, and adds them to a hash table.
 with open('Supporting Docs/packages.csv') as packages_file:
     readCSV = csv.reader(packages_file, delimiter=',')
@@ -29,6 +30,7 @@ with open('Supporting Docs/packages.csv') as packages_file:
         #  places each package into the hash table with their package ID as the key
         h.insert(package_id, p1)
 
+# Complexity - O(n)
 # imports distance data from csv file.
 with open('Supporting Docs/distances.csv') as distances_file:
     distance_data = []
@@ -36,6 +38,7 @@ with open('Supporting Docs/distances.csv') as distances_file:
     for row in readCSV:
         distance_data.append(row)
 
+# Complexity - O(n)
 # imports address data from csv file.
 with open('Supporting Docs/addresses.csv') as addresses_file:
     address_data = []
@@ -44,6 +47,7 @@ with open('Supporting Docs/addresses.csv') as addresses_file:
         address_data.append(row)
 
 
+# Complexity - O(n)
 # returns a numeric value that represents the location of the address entered.
 def address_lookup(address):
     i = 0
